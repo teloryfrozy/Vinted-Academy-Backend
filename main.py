@@ -4,42 +4,44 @@ __version__ = "0.1"
 __author__ = "Augustin ROLET"
 
 
-import datetime
 import sys
 from data_validator import DataValidator
+from engine import DataProcessing
+from constants import (
+    SHIPPERS_PRICES,
+    DISCOUNT_MAX_AMOUNT,
+    DEFAULT_PATH,
+    ALLOWED_FILE_FORMATS,
+    INVALID_LINE,
+    FREE_SHIPMENT,
+    FREE_PROVIDER,
+    NO_DISCOUNT,
+    LARGE_PACKAGE,
+    SMALL_PACKAGE,
+    CURRENT_DATE_SPLITED,
+)
 
 if sys.version_info < (3, 11, 2):
     print(
         "[WARNING] This module has been developed with Python 3.11.2. Using an older version may lead to issues."
     )
 
-SHIPPERS_PRICES = {
-    "LP": {"S": 1.50, "M": 4.90, "L": 6.90},
-    "MR": {"S": 2.00, "M": 3.00, "L": 4.00},
-}
-DISCOUNT_MAX_AMOUNT = 10
-DEFAULT_PATH = "input.txt"
-ALLOWED_FILE_FORMATS = ["txt"]
-DATE_FORMAT = "YYYY-MM-DD"
-INVALID_LINE = "Ignored"
-FREE_SHIPMENT = "0.00"
-NO_DISCOUNT = "-"
-LARGE_PACKAGE = "L"
-SMALL_PACKAGE = "S"
-FREE_PROVIDER = "LP"
-
 
 def main() -> int:
     """Main function that executes the shipment discount algorithm"""
-    if DataValidator.verify_input_file_format(FILE_NAME, ALLOWED_FILE_FORMATS):
-        print("test")
 
-    current_date_time = datetime.datetime.now()
-    current_date = current_date_time.date()
-    current_date_splited = str(current_date).split("-")
-    current_date_splited = list(map(int, current_date_splited))
-    print(current_date_splited)
-
+    data_processing = DataProcessing(SHIPPERS_PRICES, input_path, CURRENT_DATE_SPLITED)
+    data_processing.sort_asc_by_date()
+    data_processing.display_data(data_processing.rows)
+    data_processing.process_transactions(
+        INVALID_LINE,
+        DISCOUNT_MAX_AMOUNT,
+        NO_DISCOUNT,
+        SMALL_PACKAGE,
+        LARGE_PACKAGE,
+        FREE_SHIPMENT,
+        FREE_PROVIDER,
+    )
     exit(0)
 
 
@@ -49,9 +51,11 @@ try:
         exit(1)
 
     input_path = sys.argv[1]
-    FILE_NAME = input_path.split("/")[-1]
+    file_name = input_path.split("/")[-1]
+
+    DataValidator.verify_input_file_format(file_name, ALLOWED_FILE_FORMATS)
 except IndexError:
-    FILE_NAME = DEFAULT_PATH
+    input_path = DEFAULT_PATH
 
 
 main()

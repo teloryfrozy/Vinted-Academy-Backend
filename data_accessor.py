@@ -1,7 +1,9 @@
 class DataAccessor:
 
     @staticmethod
-    def get_lowest_price(provider_prices: dict[dict[float]], package_size) -> float:
+    def get_lowest_price(
+        provider_prices: dict[dict[float]], package_size: str
+    ) -> float:
         """Returns smallest price among package size prices."""
         prices = []
 
@@ -28,12 +30,13 @@ class DataAccessor:
     @staticmethod
     def get_all_sizes(shipper_prices: dict) -> list:
         """Returns all available package sizes"""
-        sizes = []
+        sizes = set()
         for shipper in shipper_prices.values():
             for size in shipper.keys():
                 if size not in sizes:
-                    sizes.append(size)
-        return sizes
+                    sizes.add(size)
+
+        return list(sizes)
 
     @staticmethod
     def get_all_shippers(shipper_prices: dict) -> list:

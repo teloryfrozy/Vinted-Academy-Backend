@@ -16,7 +16,7 @@ class DataValidator(DataAccessor):
         self.all_shippers = DataAccessor.get_all_shippers(self.shipper_prices)
 
     def verify_row(
-        self, row: str, date_allowed_format: str, current_date: list[int]
+        self, row: list, current_date: list[int]
     ) -> bool:
         """Verify the format of the row."""
         splitted_data = row.split()
@@ -25,7 +25,7 @@ class DataValidator(DataAccessor):
             return False
         if (
             DataValidator.verify_date_format(
-                splitted_data[0], date_allowed_format, current_date
+                splitted_data[0], current_date
             )
             is False
         ):
@@ -59,28 +59,24 @@ class DataValidator(DataAccessor):
 
     @staticmethod
     def verify_date_format(
-        date: str, allowed_format: str, current_date: list[int]
+        date: str, current_date: list[int]
     ) -> bool:
         """Verify if date is in right format."""
-        INVALID_DATE = "Invalid date format. "
-
         try:
+            # I chose not to print the reason for date invalidity,
+            # but I retained the various cases I handled, detailed.
             date_divided = date.split("-")
 
             if len(date_divided) != 3:
-                print(f"{INVALID_DATE}Only {allowed_format} is allowed.")
                 return False
 
             year, month, day = date_divided
 
             if len(year) != 4:
-                print(f"{INVALID_DATE}Year must contains 4 digits.")
                 return False
             elif len(month) != 2:
-                print(f"{INVALID_DATE}Month must contains 2 digits.")
                 return False
             elif len(day) != 2:
-                print(f"{INVALID_DATE}Day must contains 2 digits.")
                 return False
 
             year, month, day = map(int, date_divided)
@@ -94,25 +90,17 @@ class DataValidator(DataAccessor):
                     or (month == current_month and day > current_day)
                 )
             ):
-                print(f"{INVALID_DATE}Input date is greater than current date")
                 return False
 
-            if year < 2013:
-                print(
-                    f"{INVALID_DATE}Year must be greater than or equal to 2013 (Vinted launched in France)."
-                )
+            if year < 2013:  # Vinted's French launch year
                 return False
             elif year > 2024:
-                print(f"{INVALID_DATE}Year must be lower than or equal to 2024.")
                 return False
             elif month < 1:
-                print(f"{INVALID_DATE}Month must be greater than or equal to 1.")
                 return False
             elif month > 12:
-                print(f"{INVALID_DATE}Month must be lower than or equal to 12.")
                 return False
             elif day < 1:
-                print(f"{INVALID_DATE}Day must be greater than or equal to 1.")
                 return False
             else:
                 for i in range(1, 13):
@@ -126,15 +114,9 @@ class DataValidator(DataAccessor):
                             last_day = 30 if i % 2 == 0 and i != 8 else 31
 
                         if day > last_day:
-                            print(
-                                f"{INVALID_DATE}Day must be lower than or equal to {last_day}."
-                            )
                             return False
 
         except ValueError:
-            print(
-                f"{INVALID_DATE}Only integers are allowed using this format: {allowed_format}."
-            )
             return False
 
         return True
