@@ -1,3 +1,8 @@
+from constants import (
+    SHIPPERS_PRICES,
+)
+
+
 class DataAccessor:
 
     @staticmethod
@@ -23,15 +28,15 @@ class DataAccessor:
         return rows
 
     @staticmethod
-    def get_price_package(provider: str, size: str, shipper_prices: dict) -> float:
+    def get_price_package(provider: str, size: str, SHIPPERS_PRICES: dict) -> float:
         """Returns price according to selected provider and package size."""
-        return float(shipper_prices[provider][size])
+        return float(SHIPPERS_PRICES[provider][size])
 
     @staticmethod
-    def get_all_sizes(shipper_prices: dict) -> list:
+    def get_all_sizes() -> list:
         """Returns all available package sizes"""
         sizes = set()
-        for shipper in shipper_prices.values():
+        for shipper in SHIPPERS_PRICES.values():
             for size in shipper.keys():
                 if size not in sizes:
                     sizes.add(size)
@@ -39,6 +44,6 @@ class DataAccessor:
         return list(sizes)
 
     @staticmethod
-    def get_all_shippers(shipper_prices: dict) -> list:
+    def get_all_shippers():
         """Returns all available shipper companies."""
-        return shipper_prices.keys()
+        return SHIPPERS_PRICES.keys()

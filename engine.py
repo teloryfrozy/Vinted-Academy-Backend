@@ -14,23 +14,15 @@ from constants import (
     NO_DISCOUNT,
     LARGE_PACKAGE,
     SMALL_PACKAGE,
+    CURRENT_DATE_SPLITED
 )
 
 
 class DataProcessing(DataAccessor):
 
-    def __init__(self, shipper_prices: dict[dict[float]], file_path: str, current_date: list[int]):
-        self.shipper_prices = shipper_prices
+    def __init__(self, file_path: str):
         self.rows = DataAccessor.get_data_file(file_path)
-        self.data_validator = DataValidator(shipper_prices, file_path)
-        self.current_date = current_date
-        self.invalid_line,            
-        self.discount_max_amount,
-        self.no_discount,
-        self.small_package,
-        self.large_package,
-        self.free_shipment,
-        self.free_provider,
+        self.data_validator = DataValidator(file_path)
 
     def sort_asc_by_date(self):
         """Sorts rows by date in ascending order."""
@@ -43,7 +35,7 @@ class DataProcessing(DataAccessor):
         invalid_dates = {}
         for date in dates:
             if not DataValidator.verify_date_format(
-                date, self.current_date
+                date, CURRENT_DATE_SPLITED
             ):
                 index_date = dates.index(date)
                 dates.remove(date)
@@ -71,11 +63,12 @@ class DataProcessing(DataAccessor):
         ...
         shipment_price = DataAccessor.get_price_package(shipper, package_size, self.shipper_prices)
         "2015-02-01 S MR"
-        if 
+        if ...:
+            ...
 
     def apply_discount(self, row: list, invalid_line: str, discount_max_amount: int) -> list:
         """Appplies a discount to the row if the requirements are matched."""
-        if self.data_validator.verify_row(row, self.current_date) is False:
+        if self.data_validator.verify_row(row, CURRENT_DATE_SPLITED) is False:
             row.append(invalid_line)
         else:
             package_size, shipper = row.split()[1:]

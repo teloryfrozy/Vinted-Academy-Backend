@@ -1,6 +1,7 @@
 """Constants for the discount calculation module are defined here"""
 
 import datetime
+from data_accessor import DataAccessor
 
 
 def get_current_date_splited():
@@ -23,3 +24,5 @@ LARGE_PACKAGE = "L"
 SMALL_PACKAGE = "S"
 FREE_PROVIDER = "LP"
 CURRENT_DATE_SPLITED = get_current_date_splited()
+ALL_SHIPPERS = DataAccessor.get_all_shippers()
+ALL_SIZES = DataAccessor.get_all_sizes()

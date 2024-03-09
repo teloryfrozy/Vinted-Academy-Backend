@@ -5,36 +5,31 @@ Pre processing of data before applying the main algorithm
 """
 
 from data_accessor import DataAccessor
+from constants import (
+    SHIPPERS_PRICES,
+)
 
 
 class DataValidator(DataAccessor):
 
-    def __init__(self, shipper_prices: dict[dict[float]], file_path: str):
-        self.shipper_prices = shipper_prices
+    def __init__(self, file_path: str):
         self.rows = DataAccessor.get_data_file(file_path)
-        self.all_sizes = DataAccessor.get_all_sizes(self.shipper_prices)
-        self.all_shippers = DataAccessor.get_all_shippers(self.shipper_prices)
+        self.all_sizes = DataAccessor.get_all_sizes()
+        self.all_shippers = DataAccessor.get_all_shippers()
 
-    def verify_row(
-        self, row: list, current_date: list[int]
-    ) -> bool:
+    def verify_row(self, row: list, current_date: list[int]) -> bool:
         """Verify the format of the row."""
         splitted_data = row.split()
 
         if len(splitted_data) != 3:
             return False
-        if (
-            DataValidator.verify_date_format(
-                splitted_data[0], current_date
-            )
-            is False
-        ):
+        if DataValidator.verify_date_format(splitted_data[0], current_date) is False:
             return False
         if splitted_data[1] not in DataAccessor.get_all_sizes():
             return False
         if splitted_data[2] not in DataAccessor.get_all_shippers():
             return False
-        if self.shipper_prices.get(splitted_data[2], {}).get(splitted_data[1]) is None:
+        if SHIPPERS_PRICES.get(splitted_data[2], {}).get(splitted_data[1]) is None:
             return False
         return True
 
@@ -58,9 +53,7 @@ class DataValidator(DataAccessor):
         return True
 
     @staticmethod
-    def verify_date_format(
-        date: str, current_date: list[int]
-    ) -> bool:
+    def verify_date_format(date: str, current_date: list[int]) -> bool:
         """Verify if date is in right format."""
         try:
             # I chose not to print the reason for date invalidity,
