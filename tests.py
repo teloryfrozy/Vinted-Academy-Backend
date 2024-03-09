@@ -18,7 +18,7 @@ DATA = {
 
 ALLOWED_SIZES = ['S', 'M', 'L']
 LOWEST_PRICE = "1.50"
-MOCK = 'test.txt'
+TEST_FILE = 'test.txt'
 PROVIDERS_COUNT = len(DATA)
 
 
@@ -48,7 +48,7 @@ class TestShipmentHelper(unittest.TestCase):
         self.assertNotEqual("4.90", price)
 
     def test_read_file(self):
-        price = ShipmentHelper.read_file(MOCK)
+        price = ShipmentHelper.read_file(TEST_FILE)
         self.assertGreater(len(price), 1)
 
     def test_get_package_sizes(self):
@@ -64,19 +64,19 @@ class TestShipmentHelper(unittest.TestCase):
 class TestShipmentProcessor(unittest.TestCase):
 
     def test_order_data_asc(self):
-        original = ShipmentHelper.read_file(MOCK)
-        data = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(MOCK))
+        original = ShipmentHelper.read_file(TEST_FILE)
+        data = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(TEST_FILE))
         self.assertEqual(len(original), len(data))
         self.assertNotEqual(original, data)
 
     def test_output_data(self):
-        output = ShipmentProcessor.output_data(ShipmentHelper.read_file(MOCK))
-        ordered_output = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(MOCK))
+        output = ShipmentProcessor.output_data(ShipmentHelper.read_file(TEST_FILE))
+        ordered_output = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(TEST_FILE))
         self.assertTrue(output)
         self.assertTrue(ordered_output)
 
     def test_process_data(self):
-        content = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(MOCK))
+        content = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(TEST_FILE))
         data = ShipmentProcessor.process_data(content, DATA, 'S', 'L', 'Ignore', 'LP', '0.00', 10)
         self.assertEqual(len(content), len(data))
 

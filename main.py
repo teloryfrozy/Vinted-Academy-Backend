@@ -1,7 +1,4 @@
-"""Main file that handles the engine and run functions
-
-All constant for the modules are defined here
-"""
+"""Main file that handles the engine and run functions"""
 
 __version__ = "0.1"
 __author__ = "Augustin ROLET"
@@ -9,6 +6,7 @@ __author__ = "Augustin ROLET"
 
 import datetime
 import sys
+from data_validator import DataValidator
 
 if sys.version_info < (3, 11, 2):
     print(
@@ -16,8 +14,8 @@ if sys.version_info < (3, 11, 2):
     )
 
 SHIPPERS_PRICES = {
-    "LP": {"S": "1.50", "M": "4.90", "L": "6.90"},
-    "MR": {"S": "2.00", "M": "3.00", "L": "4.00"},
+    "LP": {"S": 1.50, "M": 4.90, "L": 6.90},
+    "MR": {"S": 2.00, "M": 3.00, "L": 4.00},
 }
 DISCOUNT_MAX_AMOUNT = 10
 DEFAULT_PATH = "input.txt"
@@ -31,19 +29,29 @@ SMALL_PACKAGE = "S"
 FREE_PROVIDER = "LP"
 
 
+def main() -> int:
+    """Main function that executes the shipment discount algorithm"""
+    if DataValidator.verify_input_file_format(FILE_NAME, ALLOWED_FILE_FORMATS):
+        print("test")
+
+    current_date_time = datetime.datetime.now()
+    current_date = current_date_time.date()
+    current_date_splited = str(current_date).split("-")
+    current_date_splited = list(map(int, current_date_splited))
+    print(current_date_splited)
+
+    exit(0)
+
+
 try:
     if len(sys.argv) > 2:
         print("Invalid command. More than 2 arguments provided.")
         exit(1)
 
-    INPUT_PATH = sys.argv[1]
+    input_path = sys.argv[1]
+    FILE_NAME = input_path.split("/")[-1]
 except IndexError:
-    INPUT_PATH = DEFAULT_PATH
+    FILE_NAME = DEFAULT_PATH
 
 
-current_date_time = datetime.datetime.now()
-current_date = current_date_time.date()
-current_date_splited = map(int, str(current_date).split("-"))
-print(current_date_splited)
-
-exit(0)
+main()
