@@ -14,7 +14,7 @@ from constants import (
     ALLOWED_FILE_FORMATS,
     INVALID_LINE,
     FREE_SHIPMENT,
-    FREE_PROVIDER,
+    FREE_SHIPPER,
     NO_DISCOUNT,
     LARGE_PACKAGE,
     SMALL_PACKAGE,
@@ -30,9 +30,8 @@ if sys.version_info < (3, 11, 2):
 def main() -> int:
     """Main function that executes the shipment discount algorithm"""
 
-    data_processing = DataProcessing(SHIPPERS_PRICES, input_path, CURRENT_DATE_SPLITED)
+    data_processing = DataProcessing(input_path)
     data_processing.sort_asc_by_date()
-    data_processing.display_data(data_processing.rows)
     data_processing.process_transactions(
         INVALID_LINE,
         DISCOUNT_MAX_AMOUNT,
@@ -40,8 +39,9 @@ def main() -> int:
         SMALL_PACKAGE,
         LARGE_PACKAGE,
         FREE_SHIPMENT,
-        FREE_PROVIDER,
+        FREE_SHIPPER,
     )
+    data_processing.display_data(data_processing.rows)
     exit(0)
 
 

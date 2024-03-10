@@ -4,17 +4,12 @@ import datetime
 from data_accessor import DataAccessor
 from data_validator import DataValidator
 from constants import (
-    SHIPPERS_PRICES,
-    DISCOUNT_MAX_AMOUNT,
-    DEFAULT_PATH,
-    ALLOWED_FILE_FORMATS,
+    CURRENT_DATE_SPLITED,
     INVALID_LINE,
-    FREE_SHIPMENT,
-    FREE_PROVIDER,
-    NO_DISCOUNT,
     LARGE_PACKAGE,
+    NO_DISCOUNT,
+    FREE_SHIPPER,
     SMALL_PACKAGE,
-    CURRENT_DATE_SPLITED
 )
 
 
@@ -34,9 +29,7 @@ class DataProcessing(DataAccessor):
         # Retrieving invalid dates
         invalid_dates = {}
         for date in dates:
-            if not DataValidator.verify_date_format(
-                date, CURRENT_DATE_SPLITED
-            ):
+            if not DataValidator.verify_date_format(date, CURRENT_DATE_SPLITED):
                 index_date = dates.index(date)
                 dates.remove(date)
                 invalid_dates[index_date] = date
@@ -58,18 +51,23 @@ class DataProcessing(DataAccessor):
                     break
         self.rows = result
 
-    def get_discount(self, package_size: str, shipper: str, discount_max_amount: int) -> tuple[str, str]:
+    def get_discount(
+        self, package_size: str, shipper: str, discount_max_amount: int
+    ) -> tuple[str, str]:
         """Returns the shipment price and the discount if there is one."""
         ...
-        shipment_price = DataAccessor.get_price_package(shipper, package_size, self.shipper_prices)
+        shipment_price = DataAccessor.get_price_package(shipper, package_size)
         "2015-02-01 S MR"
-        if ...:
-            ...
+        if not SMALL_PACKAGE and not FREE_SHIPPER:
+            return (shipment_price, NO_DISCOUNT)
+        if FREE_SHIPPER:
+            if package_size is not LARGE_PACKAGE:
+                return (shipment_price, NO_DISCOUNT)
 
-    def apply_discount(self, row: list, invalid_line: str, discount_max_amount: int) -> list:
+    def apply_discount(self, row: list, discount_max_amount: int) -> list:
         """Appplies a discount to the row if the requirements are matched."""
         if self.data_validator.verify_row(row, CURRENT_DATE_SPLITED) is False:
-            row.append(invalid_line)
+            row.append(INVALID_LINE)
         else:
             package_size, shipper = row.split()[1:]
             discount = self.get_discount(package_size, shipper, discount_max_amount)
@@ -79,13 +77,13 @@ class DataProcessing(DataAccessor):
 
     def process_transactions(
         self,
-        invalid_line,            
+        invalid_line,
         discount_max_amount,
         no_discount,
         small_package,
         large_package,
         free_shipment,
-        free_provider,
+        free_shipper,
     ):
         """Process all rows and add discounts according to the requirements."""
         self.discount_left = 0
@@ -94,8 +92,9 @@ class DataProcessing(DataAccessor):
         day = ...
         # TODO RESET THE discount_left each first row from a new month
 
+
     @staticmethod
     def display_data(rows: list):
         """Prints shipment rows as STDOUT."""
-        for row in rows:
+        for i, row in enumerate(rows):
             print(row, end="")
