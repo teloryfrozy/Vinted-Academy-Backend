@@ -66,7 +66,7 @@ class DataProcessing(DataAccessor):
         if package_size != SMALL_PACKAGE and shipper != FREE_SHIPPER:
             return (shipment_price, STRAW)
 
-        if package_size == FREE_SHIPPER:
+        if shipper == FREE_SHIPPER:
             if package_size != LARGE_PACKAGE:
                 return (shipment_price, STRAW)
             else:
@@ -79,7 +79,11 @@ class DataProcessing(DataAccessor):
                         discount = self.discount_left
                         shipment_price_left = shipment_price - self.discount_left
                         self.discount_left = OUT_OF_DISCOUNT
+                        self.large_month_count += 1
                         return (shipment_price_left, discount)
+                else:
+                    self.large_month_count += 1
+                    return (shipment_price, STRAW)
 
         if package_size == SMALL_PACKAGE:
             lowest_price = DataAccessor.get_lowest_price(package_size)
@@ -98,7 +102,6 @@ class DataProcessing(DataAccessor):
     def apply_discount(self, row: str) -> str:
         """Appplies a discount to the row if the requirements are matched."""
         package_size, shipper = row.split()[1:]
-        print(self.get_discount(package_size, shipper))
         shipment_price, discount = self.get_discount(package_size, shipper)
         row += f" {shipment_price} {discount}{BREAK_LINE}"
 
@@ -119,7 +122,7 @@ class DataProcessing(DataAccessor):
                 date = row_list[0].split(STRAW)
                 month = date[1]
 
-                if current_month is not month:
+                if current_month != month:
                     self.discount_left = DISCOUNT_MAX_AMOUNT
                     self.large_month_count = 0
                     current_month = month
