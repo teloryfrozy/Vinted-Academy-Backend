@@ -7,13 +7,11 @@ from constants import (
 class DataAccessor:
 
     @staticmethod
-    def get_lowest_price(
-        shipper_prices: dict[dict[float]], package_size: str
-    ) -> float:
+    def get_lowest_price(package_size: str) -> float:
         """Returns smallest price among package size prices."""
         prices = []
 
-        for shipper in shipper_prices.values():
+        for shipper in SHIPPERS_PRICES.values():
             for size, price in shipper.items():
                 if size == package_size:
                     prices.append(price)
@@ -21,7 +19,7 @@ class DataAccessor:
         return float(min(prices))
 
     @staticmethod
-    def get_data_file(file_path: str) -> list:
+    def get_data_file(file_path: str) -> list[str]:
         """Returns the list of rows in file."""
         with open(file_path) as f:
             rows = f.readlines()

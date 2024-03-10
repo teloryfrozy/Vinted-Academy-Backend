@@ -14,13 +14,14 @@ SHIPPERS_PRICES = {
     "MR": {"S": 2.00, "M": 3.00, "L": 4.00},
 }
 DISCOUNT_MAX_AMOUNT = 10
+OUT_OF_DISCOUNT = 0
 DEFAULT_PATH = "input.txt"
 ALLOWED_FILE_FORMATS = ["txt"]
 INVALID_LINE = "Ignored"
 FREE_SHIPMENT = "0.00"
-NO_DISCOUNT = "-"
+STRAW = "-"
 LARGE_PACKAGE = "L"
 SMALL_PACKAGE = "S"
 FREE_SHIPPER = "LP"
-BREAK_LINE = '\n'
+BREAK_LINE = "\n"
 CURRENT_DATE_SPLITED = get_current_date_splited()

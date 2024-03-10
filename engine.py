@@ -4,12 +4,16 @@ import datetime
 from data_accessor import DataAccessor
 from data_validator import DataValidator
 from constants import (
+    BREAK_LINE,
     CURRENT_DATE_SPLITED,
+    FREE_SHIPMENT,
     INVALID_LINE,
     LARGE_PACKAGE,
-    NO_DISCOUNT,
+    STRAW,
     FREE_SHIPPER,
+    OUT_OF_DISCOUNT,
     SMALL_PACKAGE,
+    DISCOUNT_MAX_AMOUNT,
 )
 
 
@@ -23,13 +27,13 @@ class DataProcessing(DataAccessor):
         """Sorts rows by date in ascending order."""
         # Retrieving dates
         dates = []
-        for item in self.rows:
-            dates.append(item.split()[0])
+        for row in self.rows:
+            dates.append(row.split()[0])
 
         # Retrieving invalid dates
         invalid_dates = {}
         for date in dates:
-            if not DataValidator.verify_date_format(date, CURRENT_DATE_SPLITED):
+            if not DataValidator.verify_date_format(date):
                 index_date = dates.index(date)
                 dates.remove(date)
                 invalid_dates[index_date] = date
@@ -49,52 +53,82 @@ class DataProcessing(DataAccessor):
                 if date in key.split():
                     result.append(key)
                     break
+
         self.rows = result
 
-    def get_discount(
-        self, package_size: str, shipper: str, discount_max_amount: int
-    ) -> tuple[str, str]:
+    def get_discount(self, package_size: str, shipper: str) -> tuple[str, str]:
         """Returns the shipment price and the discount if there is one."""
-        ...
         shipment_price = DataAccessor.get_price_package(shipper, package_size)
-        "2015-02-01 S MR"
-        if not SMALL_PACKAGE and not FREE_SHIPPER:
-            return (shipment_price, NO_DISCOUNT)
-        if FREE_SHIPPER:
-            if package_size is not LARGE_PACKAGE:
-                return (shipment_price, NO_DISCOUNT)
 
-    def apply_discount(self, row: list, discount_max_amount: int) -> list:
+        if self.discount_left == OUT_OF_DISCOUNT:
+            return (shipment_price, STRAW)
+
+        if package_size != SMALL_PACKAGE and shipper != FREE_SHIPPER:
+            return (shipment_price, STRAW)
+
+        if package_size == FREE_SHIPPER:
+            if package_size != LARGE_PACKAGE:
+                return (shipment_price, STRAW)
+            else:
+                if self.large_month_count == 2:
+                    if self.discount_left >= shipment_price:
+                        self.discount_left -= shipment_price
+                        self.large_month_count += 1
+                        return (FREE_SHIPMENT, shipment_price)
+                    else:
+                        discount = self.discount_left
+                        shipment_price_left = shipment_price - self.discount_left
+                        self.discount_left = OUT_OF_DISCOUNT
+                        return (shipment_price_left, discount)
+
+        if package_size == SMALL_PACKAGE:
+            lowest_price = DataAccessor.get_lowest_price(package_size)
+            if shipment_price == lowest_price:
+                return (shipment_price, STRAW)
+            else:
+                difference = shipment_price - lowest_price
+                if difference <= self.discount_left:
+                    self.discount_left -= difference
+                    return (lowest_price, difference)
+                else:
+                    difference -= self.discount_left
+                    self.discount_left = OUT_OF_DISCOUNT
+                    return (shipment_price - difference, difference)
+
+    def apply_discount(self, row: str) -> str:
         """Appplies a discount to the row if the requirements are matched."""
-        if self.data_validator.verify_row(row, CURRENT_DATE_SPLITED) is False:
-            row.append(INVALID_LINE)
-        else:
-            package_size, shipper = row.split()[1:]
-            discount = self.get_discount(package_size, shipper, discount_max_amount)
-            row.append(discount)
+        package_size, shipper = row.split()[1:]
+        print(self.get_discount(package_size, shipper))
+        shipment_price, discount = self.get_discount(package_size, shipper)
+        row += f" {shipment_price} {discount}{BREAK_LINE}"
 
         return row
 
-    def process_transactions(
-        self,
-        invalid_line,
-        discount_max_amount,
-        no_discount,
-        small_package,
-        large_package,
-        free_shipment,
-        free_shipper,
-    ):
+    def process_transactions(self):
         """Process all rows and add discounts according to the requirements."""
-        self.discount_left = 0
-        year = ...
-        month = ...
-        day = ...
-        # TODO RESET THE discount_left each first row from a new month
+        current_month = None
 
+        for i, row in enumerate(self.rows):
+            row = row.rstrip(BREAK_LINE)
+
+            if self.data_validator.verify_row(row) is False:
+                row += f" {INVALID_LINE}{BREAK_LINE}"
+                self.rows[i] = row
+            else:
+                row_list = row.split()
+                date = row_list[0].split(STRAW)
+                month = date[1]
+
+                if current_month is not month:
+                    self.discount_left = DISCOUNT_MAX_AMOUNT
+                    self.large_month_count = 0
+                    current_month = month
+
+                row = self.apply_discount(row)
+                self.rows[i] = row
 
     @staticmethod
-    def display_data(rows: list):
+    def display_data(rows: list[str]):
         """Prints shipment rows as STDOUT."""
-        for i, row in enumerate(rows):
+        for row in rows:
             print(row, end="")

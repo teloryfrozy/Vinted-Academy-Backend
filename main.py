@@ -7,19 +7,7 @@ __author__ = "Augustin ROLET"
 import sys
 from data_validator import DataValidator
 from engine import DataProcessing
-from constants import (
-    SHIPPERS_PRICES,
-    DISCOUNT_MAX_AMOUNT,
-    DEFAULT_PATH,
-    ALLOWED_FILE_FORMATS,
-    INVALID_LINE,
-    FREE_SHIPMENT,
-    FREE_SHIPPER,
-    NO_DISCOUNT,
-    LARGE_PACKAGE,
-    SMALL_PACKAGE,
-    CURRENT_DATE_SPLITED,
-)
+from constants import DEFAULT_PATH, ALLOWED_FILE_FORMATS
 
 if sys.version_info < (3, 11, 2):
     print(
@@ -29,18 +17,9 @@ if sys.version_info < (3, 11, 2):
 
 def main() -> int:
     """Main function that executes the shipment discount algorithm"""
-
     data_processing = DataProcessing(input_path)
     data_processing.sort_asc_by_date()
-    data_processing.process_transactions(
-        INVALID_LINE,
-        DISCOUNT_MAX_AMOUNT,
-        NO_DISCOUNT,
-        SMALL_PACKAGE,
-        LARGE_PACKAGE,
-        FREE_SHIPMENT,
-        FREE_SHIPPER,
-    )
+    data_processing.process_transactions()
     data_processing.display_data(data_processing.rows)
     exit(0)
 

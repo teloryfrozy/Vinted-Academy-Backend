@@ -6,7 +6,9 @@ Pre processing of data before applying the main algorithm
 
 from data_accessor import DataAccessor
 from constants import (
+    CURRENT_DATE_SPLITED,
     SHIPPERS_PRICES,
+    STRAW,
 )
 
 
@@ -17,13 +19,13 @@ class DataValidator(DataAccessor):
         self.all_sizes = DataAccessor.get_all_sizes()
         self.all_shippers = DataAccessor.get_all_shippers()
 
-    def verify_row(self, row: list, current_date: list[int]) -> bool:
+    def verify_row(self, row: str) -> bool:
         """Verify the format of the row."""
         splitted_data = row.split()
 
         if len(splitted_data) != 3:
             return False
-        if DataValidator.verify_date_format(splitted_data[0], current_date) is False:
+        if DataValidator.verify_date_format(splitted_data[0]) is False:
             return False
         if splitted_data[1] not in DataAccessor.get_all_sizes():
             return False
@@ -53,12 +55,12 @@ class DataValidator(DataAccessor):
         return True
 
     @staticmethod
-    def verify_date_format(date: str, current_date: list[int]) -> bool:
+    def verify_date_format(date: str) -> bool:
         """Verify if date is in right format."""
         try:
             # I chose not to print the reason for date invalidity,
             # but I retained the various cases I handled, detailed.
-            date_divided = date.split("-")
+            date_divided = date.split(STRAW)
 
             if len(date_divided) != 3:
                 return False
@@ -75,7 +77,7 @@ class DataValidator(DataAccessor):
             year, month, day = map(int, date_divided)
 
             # This test may be added if it fits the requirements
-            current_year, current_month, current_day = current_date
+            current_year, current_month, current_day = CURRENT_DATE_SPLITED
             if year > current_year or (
                 year == current_year
                 and (
