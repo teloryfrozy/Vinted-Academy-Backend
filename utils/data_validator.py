@@ -1,15 +1,10 @@
-"""File that handles mechanisms of the discount module.
+"""Data Validator module.
 
-verify the conformity of input data in the module
-Pre processing of data before applying the main algorithm
+Ensures data integrity validity of input data
 """
 
-from data_accessor import DataAccessor
-from constants import (
-    CURRENT_DATE_SPLITED,
-    SHIPPERS_PRICES,
-    STRAW,
-)
+from utils.data_accessor import DataAccessor
+from utils.constants import CURRENT_DATE_SPLITED, SHIPPERS_PRICES, STRAW
 
 
 class DataValidator(DataAccessor):

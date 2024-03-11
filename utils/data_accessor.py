@@ -1,7 +1,9 @@
-from constants import (
-    BREAK_LINE,
-    SHIPPERS_PRICES,
-)
+"""Data Accessor module.
+
+Methods used  data
+"""
+
+from utils.constants import BREAK_LINE, SHIPPERS_PRICES
 
 
 class DataAccessor:

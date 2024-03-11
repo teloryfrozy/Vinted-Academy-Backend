@@ -5,9 +5,9 @@ __author__ = "Augustin ROLET"
 
 
 import sys
-from data_validator import DataValidator
-from engine import DataProcessing
-from constants import DEFAULT_PATH, ALLOWED_FILE_FORMATS
+from utils.constants import ALLOWED_FILE_FORMATS, DEFAULT_PATH
+from utils.data_validator import DataValidator
+from utils.engine import DataProcessing
 
 if sys.version_info < (3, 11, 2):
     print(

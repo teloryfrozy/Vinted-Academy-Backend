@@ -1,11 +1,10 @@
 """Handles all algorithms with the data."""
 
 import datetime
-from data_accessor import DataAccessor
-from data_validator import DataValidator
-from constants import (
+from utils.data_accessor import DataAccessor
+from utils.data_validator import DataValidator
+from utils.constants import (
     BREAK_LINE,
-    CURRENT_DATE_SPLITED,
     FREE_SHIPMENT,
     INVALID_LINE,
     LARGE_PACKAGE,
