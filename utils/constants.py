@@ -27,4 +27,5 @@ LARGE_PACKAGE = "L"
 SMALL_PACKAGE = "S"
 FREE_SHIPPER = "LP"
 BREAK_LINE = "\n"
+DATETIME_FORMAT = "%Y-%m-%d"
 CURRENT_DATE_SPLITED = get_current_date_splited()

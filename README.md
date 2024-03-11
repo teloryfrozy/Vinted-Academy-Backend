@@ -1,8 +1,15 @@
 # Vinted-Academy-Backend
 🐍 Python Shipment discount calculation module for Vinted Academy
 
+## Features
 
-Add the shipment prices and discount according to guidelines given by the assignement
+- Calculate shipment prices and apply discounts based on the guidelines provided in the assignment.
+- Unit tests of functions are written in `tests/tests.py`.
+- Code is clearly written, organized, and divided into three main modules:
+  - **Data Accessor (`utils/data_accessor.py`):** Access and return the data from predefined constants in `utils/constants.py`.
+  - **Data Validator (`utils/data_validator.py`):** Validate the conformity of data to ensure accurate processing.
+  - **Engine (`utils/engine.py`):** Handle the execution of algorithms for shipment discount calculations.
+- An executor `main.py` file.
 
 
 ## Metadata
@@ -11,7 +18,7 @@ Add the shipment prices and discount according to guidelines given by the assign
 
 
 ## Requirements
-Python3 - Version used: 3.11.2
+- Python 3 - Version used in development: 3.11.2
 
 
 ## Get started

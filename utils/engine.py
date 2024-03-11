@@ -8,6 +8,7 @@ from utils.data_accessor import DataAccessor
 from utils.data_validator import DataValidator
 from utils.constants import (
     BREAK_LINE,
+    DATETIME_FORMAT,
     FREE_SHIPMENT,
     INVALID_LINE,
     LARGE_PACKAGE,
@@ -40,7 +41,7 @@ class DataProcessor(DataAccessor):
                 valid_rows.append(row)
 
         valid_rows.sort(
-            key=lambda row: datetime.datetime.strptime(row.split()[0], "%Y-%m-%d")
+            key=lambda row: datetime.datetime.strptime(row.split()[0], DATETIME_FORMAT)
         )
 
         # Setting data back in ascending order
@@ -89,13 +90,11 @@ class DataProcessor(DataAccessor):
                 return (shipment_price, STRAW)
             else:
                 difference = shipment_price - lowest_price
-                if self.discount_left < 1.0:
-                        print(round(self.discount_left, 2), "DIFF", difference)
                 if difference <= self.discount_left:
                     self.discount_left -= difference
                     return (lowest_price, difference)
                 else:
-                    difference -= self.discount_left
+                    difference = self.discount_left
                     self.discount_left = OUT_OF_DISCOUNT
                     return (shipment_price - difference, difference)
 
@@ -103,16 +102,6 @@ class DataProcessor(DataAccessor):
         """Appplies a discount to the row if the requirements are matched."""
         package_size, shipper = row.split()[1:]
         shipment_price, discount = self.get_discount(package_size, shipper)
-
-        # print(self.discount_left, row.split())
-
-        # if row.split()[0] == "2023-02-18":
-        #     print("test")
-        #     shipment_price = round(float(shipment_price), 2)
-        #     if discount != STRAW:
-        #         discount = round(float(discount), 2)
-        #     print(self.discount_left, shipment_price, discount)
-        #     print("test")
 
         # As we are working with float we must round them
         shipment_price = round(float(shipment_price), 2)
