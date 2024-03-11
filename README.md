@@ -9,7 +9,7 @@
   - **Data Accessor (`utils/data_accessor.py`):** Access and return the data from predefined constants in `utils/constants.py`.
   - **Data Validator (`utils/data_validator.py`):** Validate the conformity of data to ensure accurate processing.
   - **Engine (`utils/engine.py`):** Handle the execution of algorithms for shipment discount calculations.
-- An executor `main.py` file.
+- An executor `main.py` file that coordinates the overall process of adding discounts to the transactions.
 
 
 ## Metadata
