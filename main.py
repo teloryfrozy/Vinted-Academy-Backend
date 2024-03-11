@@ -37,7 +37,7 @@ try:
     input_path = sys.argv[1]
     file_name = input_path.split("/")[-1]
 
-    DataValidator.verify_input_file_format(file_name, ALLOWED_FILE_FORMATS)
+    DataValidator.verify_input_file_format(file_name)
 except IndexError:
     input_path = DEFAULT_PATH
 

@@ -4,7 +4,7 @@ Ensures data integrity validity of input data
 """
 
 from utils.data_accessor import DataAccessor
-from utils.constants import CURRENT_DATE_SPLITED, SHIPPERS_PRICES, STRAW
+from utils.constants import ALLOWED_FILE_FORMATS, CURRENT_DATE_SPLITED, SHIPPERS_PRICES, STRAW
 
 
 class DataValidator(DataAccessor):
@@ -30,21 +30,21 @@ class DataValidator(DataAccessor):
             return False
         return True
 
-    def verify_provider(self, shipper: str) -> bool:
-        """Verify if provider is in data set."""
+    def verify_shipper(self, shipper: str) -> bool:
+        """Verify if provider exist."""
         return shipper in self.all_shippers
 
     def verify_package_size(self, size: str):
-        """Verify if size is in data set."""
+        """Verify if size exist."""
         return size in self.all_sizes
 
     @staticmethod
-    def verify_input_file_format(file_name: str, allowed_formats: list) -> bool:
+    def verify_input_file_format(file_name: str) -> bool:
         """Verify if the input file format is valid."""
         file_extension = file_name.split(".")[1]
 
-        if file_extension not in allowed_formats:
-            print(f"Invalid file format. Only {allowed_formats} files are expected.")
+        if file_extension not in ALLOWED_FILE_FORMATS:
+            print(f"Invalid file format. Only {ALLOWED_FILE_FORMATS} files are expected.")
             exit(1)
 
         return True
