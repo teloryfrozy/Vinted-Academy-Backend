@@ -138,4 +138,5 @@ class TestDataProcessor(unittest.TestCase):
         self.assertTrue(data_processor.display_data(data_processor.rows))
 
 
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()

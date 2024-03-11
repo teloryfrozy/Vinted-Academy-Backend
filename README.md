@@ -27,3 +27,8 @@ git clone -b main https://github.com/teloryfrozy/Vinted-Academy-Backend.git
 cd Vinted-Academy-Backend
 python main.py input.txt
 ```
+
+### Running test
+
+Command to run the tests:
+```python3 tests/tests.py```
