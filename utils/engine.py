@@ -104,9 +104,9 @@ class DataProcessor(DataAccessor):
         shipment_price, discount = self.get_discount(package_size, shipper)
 
         # As we are working with float we must round them
-        shipment_price = round(float(shipment_price), 2)
+        shipment_price = "{:.2f}".format(float(shipment_price))
         if discount != STRAW:
-            discount = round(float(discount), 2)
+            discount = "{:.2f}".format(float(discount))
 
         row += f" {shipment_price} {discount}{BREAK_LINE}"
 

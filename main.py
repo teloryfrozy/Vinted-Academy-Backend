@@ -3,7 +3,7 @@
 Handles the execution of the shipment discount algorithm, processing input data and displaying results.
 """
 
-__version__ = "0.1"
+__version__ = "1.0.0"
 __author__ = "Augustin ROLET"
 __license__ = "MIT"
 __description__ = "Main module for handling shipment discount algorithms."
