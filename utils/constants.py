@@ -16,8 +16,8 @@ SHIPPERS_PRICES = {
     "LP": {"S": 1.50, "M": 4.90, "L": 6.90},
     "MR": {"S": 2.00, "M": 3.00, "L": 4.00},
 }
-DISCOUNT_MAX_AMOUNT = 10
-OUT_OF_DISCOUNT = 0
+DISCOUNT_MAX_AMOUNT = 10.00
+OUT_OF_DISCOUNT = 0.00
 DEFAULT_PATH = "input.txt"
 ALLOWED_FILE_FORMATS = ["txt"]
 INVALID_LINE = "Ignored"

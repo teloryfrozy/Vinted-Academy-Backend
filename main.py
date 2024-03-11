@@ -6,7 +6,7 @@ Handles the execution of the shipment discount algorithm, processing input data 
 __version__ = "0.1"
 __author__ = "Augustin ROLET"
 __license__ = "MIT"
-__description__ = "A module for handling shipment discount algorithms."
+__description__ = "Main module for handling shipment discount algorithms."
 
 
 import sys

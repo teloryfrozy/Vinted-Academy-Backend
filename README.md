@@ -1,10 +1,13 @@
 # Vinted-Academy-Backend
 🐍 Python Shipment discount calculation module for Vinted Academy
 
-## Author
-- Augustin ROLET ([GitHub](https://github.com/teloryfrozy/))
-## Version
-- Version 1.0.0
+
+Add the shipment prices and discount according to guidelines given by the assignement
+
+
+## Metadata
+- Author: Augustin ROLET ([GitHub](https://github.com/teloryfrozy/))
+- Version: 1.0.0
 
 
 ## Requirements
@@ -17,5 +20,3 @@ git clone -b main https://github.com/teloryfrozy/Vinted-Academy-Backend.git
 cd Vinted-Academy-Backend
 python main.py input.txt
 ```
-
-Leave the input.txt file at the root of the project

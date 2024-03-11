@@ -27,34 +27,30 @@ class DataProcessor(DataAccessor):
 
     def sort_asc_by_date(self):
         """Sorts rows by date in ascending order."""
-        # Retrieving dates
-        dates = []
-        for row in self.rows:
-            dates.append(row.split()[0])
-
-        # Retrieving invalid dates
         invalid_dates = {}
-        for date in dates:
+        valid_rows = []
+
+        # Retrieving valid dates
+        for row in self.rows:
+            date = row.split()[0]
             if not DataValidator.verify_date_format(date):
-                index_date = dates.index(date)
-                dates.remove(date)
-                invalid_dates[index_date] = date
+                index_date = self.rows.index(row)
+                invalid_dates[date] = (index_date, row)
+            else:
+                valid_rows.append(row)
 
-        dates_asc_list = sorted(
-            dates, key=lambda x: datetime.datetime.strptime(x, "%Y-%m-%d")
+        valid_rows.sort(
+            key=lambda row: datetime.datetime.strptime(row.split()[0], "%Y-%m-%d")
         )
-
-        if len(invalid_dates.keys()) > 0:
-            for index_date, date in invalid_dates.items():
-                dates_asc_list.insert(index_date, date)
 
         # Setting data back in ascending order
         result = []
-        for date in dates_asc_list:
-            for key in self.rows:
-                if date in key.split():
-                    result.append(key)
-                    break
+        for valid_row in valid_rows:
+            result.append(valid_row)
+
+        if len(invalid_dates) > 0:
+            for index_date, invalid_row in invalid_dates.values():
+                result.insert(index_date, invalid_row)
 
         self.rows = result
 
@@ -93,6 +89,8 @@ class DataProcessor(DataAccessor):
                 return (shipment_price, STRAW)
             else:
                 difference = shipment_price - lowest_price
+                if self.discount_left < 1.0:
+                        print(round(self.discount_left, 2), "DIFF", difference)
                 if difference <= self.discount_left:
                     self.discount_left -= difference
                     return (lowest_price, difference)
@@ -105,6 +103,22 @@ class DataProcessor(DataAccessor):
         """Appplies a discount to the row if the requirements are matched."""
         package_size, shipper = row.split()[1:]
         shipment_price, discount = self.get_discount(package_size, shipper)
+
+        # print(self.discount_left, row.split())
+
+        # if row.split()[0] == "2023-02-18":
+        #     print("test")
+        #     shipment_price = round(float(shipment_price), 2)
+        #     if discount != STRAW:
+        #         discount = round(float(discount), 2)
+        #     print(self.discount_left, shipment_price, discount)
+        #     print("test")
+
+        # As we are working with float we must round them
+        shipment_price = round(float(shipment_price), 2)
+        if discount != STRAW:
+            discount = round(float(discount), 2)
+
         row += f" {shipment_price} {discount}{BREAK_LINE}"
 
         return row
@@ -129,7 +143,7 @@ class DataProcessor(DataAccessor):
                     self.large_month_count = 0
                     current_month = month
 
-                row = self.apply_discount(row)
+                row = self.apply_discount(row.strip())
                 self.rows[i] = row
 
     @staticmethod
