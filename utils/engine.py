@@ -136,7 +136,11 @@ class DataProcessor(DataAccessor):
                 self.rows[i] = row
 
     @staticmethod
-    def display_data(rows: list[str]):
+    def display_data(rows: list[str]) -> bool:
         """Prints shipment rows as STDOUT."""
-        for row in rows:
-            print(row, end="")
+        try:
+            for row in rows:
+                print(row, end="")
+            return True
+        except Exception:
+            return False

@@ -22,10 +22,10 @@ if sys.version_info < (3, 11, 2):
 
 def main() -> int:
     """Main function that executes the shipment discount algorithm"""
-    data_processing = DataProcessor(input_path)
-    data_processing.sort_asc_by_date()
-    data_processing.process_transactions()
-    data_processing.display_data(data_processing.rows)
+    data_processor = DataProcessor(input_path)
+    data_processor.sort_asc_by_date()
+    data_processor.process_transactions()
+    data_processor.display_data(data_processor.rows)
     exit(0)
 
 

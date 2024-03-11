@@ -3,16 +3,20 @@
 Defines tests to assert the good functioning of the module.
 """
 
+import io
 import unittest
 import sys
 import os
 
 project_root = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.abspath(os.path.join(project_root, "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(project_root, "..")))
+# Suppressing STDOUT from the module
+sys.stdout = io.StringIO()
 
 from utils.constants import SMALL_PACKAGE
 from utils.data_accessor import DataAccessor
 from utils.data_validator import DataValidator
+from utils.engine import DataProcessor
 
 
 class TestDataAccessor(unittest.TestCase):
@@ -108,46 +112,30 @@ class TestDataValidator(unittest.TestCase):
 
 
 class TestDataProcessor(unittest.TestCase):
-    
 
-    def setUp(self) -> None:
-        return super().setUp()
-    
     def test_sort_asc_by_date(self):
-        ...
+        data_processor = DataProcessor("tests/test.txt")
+        original_len = len(data_processor.rows)
+        data_processor.sort_asc_by_date()
+        sorted_len = len(data_processor.rows)
+        self.assertTrue(original_len, sorted_len)
 
-        # original = ShipmentHelper.read_file(TEST_FILE)
-        # data = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(TEST_FILE))
-        # self.assertEqual(len(original), len(data))
+    def test_process_transactions(self):
+        data_processor = DataProcessor("tests/test.txt")
+        original_len = len(data_processor.rows)
+        data_processor.process_transactions()
+        final_len = len(data_processor.rows)
+        self.assertTrue(original_len, final_len)
 
+    def test_display_data(self):
+        data_processor = DataProcessor("tests/test.txt")
+        self.assertTrue(data_processor.display_data(data_processor.rows))
 
+        data_processor.sort_asc_by_date()
+        self.assertTrue(data_processor.display_data(data_processor.rows))
 
-"""class TestShipmentProcessor(unittest.TestCase):
-
-
-def test_process_data(self):
-        content = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(TEST_FILE))
-        data = ShipmentProcessor.process_data(
-            content, DATA, "S", "L", "Ignore", "LP", "0.00", 10
-        )
-        len before sorting = len after sorting
-        self.assertEqual(len(content), len(data))
-
-
-    def test_order_data_asc(self):
-        original = ShipmentHelper.read_file(TEST_FILE)
-        data = ShipmentProcessor.order_data_asc(ShipmentHelper.read_file(TEST_FILE))
-        self.assertEqual(len(original), len(data))
-        self.assertNotEqual(original, data)
-
-    def test_output_data(self):
-        output = ShipmentProcessor.output_data(ShipmentHelper.read_file(TEST_FILE))
-        ordered_output = ShipmentProcessor.order_data_asc(
-            ShipmentHelper.read_file(TEST_FILE)
-        )
-        self.assertTrue(output)
-        self.assertTrue(ordered_output)"""
+        data_processor.process_transactions()
+        self.assertTrue(data_processor.display_data(data_processor.rows))
 
 
-if __name__ == "__main__":
-    unittest.main()
+unittest.main()
