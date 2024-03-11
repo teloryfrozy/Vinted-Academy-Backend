@@ -1,3 +1,9 @@
+"""Data Tests Module.
+
+Defines tests to assert the good functioning of the module.
+"""
+
+
 import unittest
 
 from helper import ShipmentHelper

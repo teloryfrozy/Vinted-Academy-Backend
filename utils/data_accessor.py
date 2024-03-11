@@ -1,6 +1,6 @@
-"""Data Accessor module.
+"""Data Accessor Module.
 
-Methods used  data
+Provides methods for retrieving data to the algorithm from predefined constants.
 """
 
 from utils.constants import BREAK_LINE, SHIPPERS_PRICES

@@ -1,4 +1,7 @@
-"""Constants for the discount calculation module are defined here"""
+"""Discount Calculation Constants Module.
+
+Defines constants used in the main algorithm.
+"""
 
 import datetime
 

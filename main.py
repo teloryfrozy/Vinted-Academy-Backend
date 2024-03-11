@@ -1,13 +1,18 @@
-"""Main file that handles the engine and run functions"""
+"""Shipment Discount Main Module.
+
+Handles the execution of the shipment discount algorithm, processing input data and displaying results.
+"""
 
 __version__ = "0.1"
 __author__ = "Augustin ROLET"
+__license__ = "MIT"
+__description__ = "A module for handling shipment discount algorithms."
 
 
 import sys
 from utils.constants import ALLOWED_FILE_FORMATS, DEFAULT_PATH
 from utils.data_validator import DataValidator
-from utils.engine import DataProcessing
+from utils.engine import DataProcessor
 
 if sys.version_info < (3, 11, 2):
     print(
@@ -17,7 +22,7 @@ if sys.version_info < (3, 11, 2):
 
 def main() -> int:
     """Main function that executes the shipment discount algorithm"""
-    data_processing = DataProcessing(input_path)
+    data_processing = DataProcessor(input_path)
     data_processing.sort_asc_by_date()
     data_processing.process_transactions()
     data_processing.display_data(data_processing.rows)

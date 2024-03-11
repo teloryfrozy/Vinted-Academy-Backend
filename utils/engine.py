@@ -1,4 +1,7 @@
-"""Handles all algorithms with the data."""
+"""Data Processor Module.
+
+Handles data algorithms necessary for the main shipment discount module.
+"""
 
 import datetime
 from utils.data_accessor import DataAccessor
@@ -16,7 +19,7 @@ from utils.constants import (
 )
 
 
-class DataProcessing(DataAccessor):
+class DataProcessor(DataAccessor):
 
     def __init__(self, file_path: str):
         self.rows = DataAccessor.get_data_file(file_path)
