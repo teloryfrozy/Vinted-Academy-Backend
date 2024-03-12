@@ -4,7 +4,12 @@ Ensures data integrity validity of input data
 """
 
 from utils.data_accessor import DataAccessor
-from utils.constants import ALLOWED_FILE_FORMATS, CURRENT_DATE_SPLITED, SHIPPERS_PRICES, STRAW
+from utils.constants import (
+    ALLOWED_FILE_FORMATS,
+    CURRENT_DATE_SPLITED,
+    SHIPPERS_PRICES,
+    STRAW,
+)
 
 
 class DataValidator(DataAccessor):
@@ -44,7 +49,9 @@ class DataValidator(DataAccessor):
         file_extension = file_name.split(".")[1]
 
         if file_extension not in ALLOWED_FILE_FORMATS:
-            print(f"Invalid file format. Only {ALLOWED_FILE_FORMATS} files are expected.")
+            print(
+                f"Invalid file format. Only {ALLOWED_FILE_FORMATS} files are expected."
+            )
             exit(1)
 
         return True
@@ -71,7 +78,6 @@ class DataValidator(DataAccessor):
 
             year, month, day = map(int, date_divided)
 
-            # This test may be added if it fits the requirements
             current_year, current_month, current_day = CURRENT_DATE_SPLITED
             if year > current_year or (
                 year == current_year
