@@ -10,7 +10,7 @@ __description__ = "Main module for handling shipment discount algorithms."
 
 
 import sys
-from utils.constants import ALLOWED_FILE_FORMATS, DEFAULT_PATH
+from utils.constants import DEFAULT_PATH
 from utils.data_validator import DataValidator
 from utils.engine import DataProcessor
 
