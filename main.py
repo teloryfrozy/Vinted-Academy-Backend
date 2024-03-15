@@ -42,4 +42,5 @@ except IndexError:
     input_path = DEFAULT_PATH
 
 
-main()
+if __name__ == "__main__":
+    main()
